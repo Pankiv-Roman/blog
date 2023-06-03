@@ -1,19 +1,9 @@
-#spring.jpa:
-#  autoconfigure:
-#    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-#  spring.datasource:
-#    url: jdbc:postgresql://localhost:2023/postgres
-#    username: postgres
-#    password: 1111
-#  flyway:
-#    enabled: true
 spring.jpa:
   database: POSTGRESQL
   hibernate.ddl-auto: update
   show-sql: true
 
 spring.datasource:
-  platform: postgres
   driverClassName: org.postgresql.Driver
   url: jdbc:postgresql://localhost:2023/testdb
   username: postgres

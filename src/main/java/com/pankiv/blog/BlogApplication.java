@@ -1,4 +1,4 @@
-package com.example.pankiv.blog;
+package com.pankiv.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
