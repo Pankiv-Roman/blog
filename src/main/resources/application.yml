@@ -9,3 +9,9 @@ spring.datasource:
   username: postgres
   password: 1111
 
+spring.flyway:
+  user: postgres
+  password: 1111
+  schemas: post
+  enabled: true
+  locations: classpath:db/migration

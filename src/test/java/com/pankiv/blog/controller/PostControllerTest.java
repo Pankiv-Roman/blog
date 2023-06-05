@@ -41,12 +41,14 @@ class PostControllerTest {
                         .id(1L)
                         .content("testContent")
                         .title("testTitle2")
+                        .star(false)
                         .build();
         post2 =
                 Post.builder()
                         .id(2L)
                         .content("testContent2")
                         .title("testTitle1")
+                        .star(true)
                         .build();
 
         posts = Arrays.asList(post1, post2);
@@ -134,5 +136,21 @@ class PostControllerTest {
                                 "    \"title\": \"testTitle111\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void fetchPostsListWithStar() throws Exception {
+        when(postService.fetchPostsListWithStar()).thenReturn(posts);
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/posts/star")
+                .accept(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("testTitle1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].content").value("testContent2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].star").value(true));
+
     }
 }

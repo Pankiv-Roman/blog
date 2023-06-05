@@ -9,6 +9,5 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByTitle(String title, Sort sort);
 
-    Post findAllByTitleIgnoreCase(String title);
-
+    List<Post> findAllByStar(boolean star);
 }

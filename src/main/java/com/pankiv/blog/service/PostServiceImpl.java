@@ -40,4 +40,23 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
         return post;
     }
+
+    @Override
+    public Post markPostStar(long id, boolean star) {
+        Post post = postRepository.getById(id);
+        post.setStar(true);
+        return postRepository.save(post);
+    }
+
+    @Override
+    public Post deleteMarkWithPost(long id) {
+        Post post = postRepository.getById(id);
+        post.setStar(false);
+        return postRepository.save(post);
+    }
+
+    @Override
+    public List<Post> fetchPostsListWithStar() {
+        return postRepository.findAllByStar(true);
+    }
 }

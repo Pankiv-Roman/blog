@@ -2,6 +2,7 @@ package com.pankiv.blog.service;
 
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.PostRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -39,5 +40,39 @@ class PostServiceTest {
         verify(postRepository, times(1)).delete(post);
 
         assertEquals(post, deletedPost);
+    }
+
+    @Test
+    public void testMarkPostStar() {
+        Post post = new Post();
+        post.setId(1L);
+        post.setStar(false);
+
+        when(postRepository.getById(1L)).thenReturn(post);
+        when(postRepository.save(any(Post.class))).thenReturn(post);
+
+        Post updatedPost = postService.markPostStar(1L, true);
+
+        verify(postRepository, times(1)).getById(1L);
+        verify(postRepository, times(1)).save(post);
+
+        Assertions.assertTrue(updatedPost.isStar());
+    }
+
+    @Test
+    public void testDeleteMarkWithPostStar() {
+        Post post = new Post();
+        post.setId(1L);
+        post.setStar(true);
+
+        when(postRepository.getById(1L)).thenReturn(post);
+        when(postRepository.save(any(Post.class))).thenReturn(post);
+
+        Post updatedPost = postService.deleteMarkWithPost(1L);
+
+        verify(postRepository, times(1)).getById(1L);
+        verify(postRepository, times(1)).save(post);
+
+        Assertions.assertFalse(updatedPost.isStar());
     }
 }

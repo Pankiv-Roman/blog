@@ -24,4 +24,8 @@ public class Post {
     private String title;
     private String content;
 
+    private boolean star;
+
+    public Post(long postId, String testTitle, String testContent) {
+    }
 }

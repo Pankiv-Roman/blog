@@ -27,15 +27,30 @@ public class PostController {
         return postService.fetchPostsList(title, sort);
     }
 
+    @GetMapping("star")
+    public List<Post> fetchPostsListWithStar() {
+        return postService.fetchPostsListWithStar();
+    }
+
     @PutMapping("{id}")
     public Post changePost(@PathVariable long id,
                            @RequestBody Post post) {
         return postService.changePost(id, post);
     }
 
+    @PutMapping("{id}/star")
+    public Post markPostStar(@PathVariable long id) {
+        return postService.markPostStar(id, true);
+    }
+
     @DeleteMapping("{id}")
     public void deletePost(@PathVariable long id) {
         postService.deletePost(id);
+    }
+
+    @DeleteMapping("{id}/star")
+    public Post deleteMarkStarWithPost(@PathVariable long id) {
+       return postService.deleteMarkWithPost(id);
     }
 
 }

@@ -12,4 +12,10 @@ public interface PostService {
     Post changePost(Long id, Post post);
 
     Post deletePost(long id);
+
+    Post markPostStar(long id, boolean star);
+
+    Post deleteMarkWithPost(long id);
+
+    List<Post> fetchPostsListWithStar();
 }
