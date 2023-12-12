@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -29,9 +30,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post changePost(Long id, Post post) {
-        post.setId(id);
-        return postRepository.save(post);
+    public Post changePost(long id, Post post) {
+        Optional<Post> existingPost = postRepository.findById(id);
+        postRepository.getById(id);
+        Post postToUpdate = existingPost.get();
+        postToUpdate.setTitle(post.getTitle());
+        postToUpdate.setContent(post.getContent());
+        return postRepository.save(postToUpdate);
     }
 
     @Override

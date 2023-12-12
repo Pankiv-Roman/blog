@@ -9,7 +9,7 @@ public interface PostService {
 
     List<Post> fetchPostsList(String title, String sort);
 
-    Post changePost(Long id, Post post);
+    Post changePost(long id, Post post);
 
     Post deletePost(long id);
 
