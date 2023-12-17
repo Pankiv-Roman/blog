@@ -20,7 +20,8 @@ public class CommentController {
     private PostRepository postRepository;
 
     @PostMapping("/{postId}/comments")
-    public Comment addCommentToPost(@PathVariable Long postId, @RequestBody Comment comment) {
+    public Comment addCommentToPost(@PathVariable Long postId,
+                                    @RequestBody Comment comment) {
         Post post = postRepository.getById(postId);
         comment.setPost(post);
         return commentService.addCommentToPost(post, comment);
@@ -33,12 +34,12 @@ public class CommentController {
 
     @GetMapping("/{postId}/comments/{id}")
     public Comment getCommentWithPost(@PathVariable Long postId,
-                                                      @PathVariable long id){
+                                      @PathVariable long id) {
         return commentService.getCommentWithPost(postId, id);
     }
 
     @GetMapping("{postId}/full")
-    public Comment getCommentsWithPost(@PathVariable Long postId) {
+    public Post getCommentsWithPost(@PathVariable Long postId) {
         return commentService.getCommentsWithPost(postId);
     }
 }

@@ -10,5 +10,5 @@ public interface CommentService {
 
     Comment addCommentToPost(Post post, Comment comment);
 
-    Comment getCommentsWithPost(Long postId);
+    Post getCommentsWithPost(Long postId);
 }

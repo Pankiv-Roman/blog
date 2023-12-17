@@ -34,30 +34,10 @@ class PostControllerTest {
     private Post post1;
     private Post post2;
 
-    @BeforeEach
-    void setUp() {
-        post1 =
-                Post.builder()
-                        .id(1L)
-                        .content("testContent")
-                        .title("testTitle2")
-                        .star(false)
-                        .build();
-        post2 =
-                Post.builder()
-                        .id(2L)
-                        .content("testContent2")
-                        .title("testTitle1")
-                        .star(true)
-                        .build();
-
-        posts = Arrays.asList(post1, post2);
-    }
-
     @Test
     void testSavePost() throws Exception {
         Post inputPost =
-                Post.builder()
+                Post.postBuilder()
                         .content("testContent")
                         .title("testTitle")
                         .build();
@@ -71,6 +51,28 @@ class PostControllerTest {
                                 "    \"title\": \"testTitle\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
+    }
+
+    @BeforeEach
+    void setUp() {
+        post1 =
+                Post.postBuilder()
+                        .id(1L)
+                        .content("testContent")
+                        .title("testTitle2")
+                        .star(false)
+                        .comments(null)
+                        .build();
+        post2 =
+                Post.postBuilder()
+                        .id(2L)
+                        .content("testContent2")
+                        .title("testTitle1")
+                        .star(true)
+                        .comments(null)
+                        .build();
+
+        posts = Arrays.asList(post1, post2);
     }
 
     @Test

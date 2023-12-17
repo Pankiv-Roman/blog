@@ -23,7 +23,7 @@ public class Comment {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creationDate", updatable = false)
+    @Column(name = "creation_date", updatable = false)
     private Date creationDate;
 
     @ManyToOne

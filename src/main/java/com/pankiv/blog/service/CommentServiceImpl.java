@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
@@ -33,12 +33,11 @@ public class CommentServiceImpl implements CommentService{
         List<Comment> comments = post.getComments();
         comments.add(comment);
         post.setComments(comments);
-        commentRepository.save(comment);
-        return commentRepository.save(post);
+        return commentRepository.save(comment);
     }
 
     @Override
-    public Comment getCommentsWithPost(Long postId) {
+    public Post getCommentsWithPost(Long postId) {
         return postRepository.findById(postId)
                 .orElse(null);
     }

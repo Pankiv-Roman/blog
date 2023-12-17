@@ -33,24 +33,24 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public Post changePost(@PathVariable long id,
+    public Post changePost(@PathVariable Long id,
                            @RequestBody Post post) {
         return postService.changePost(id, post);
     }
 
     @PutMapping("{id}/star")
-    public Post markPostStar(@PathVariable long id) {
+    public Post markPostStar(@PathVariable Long id) {
         return postService.markPostStar(id, true);
     }
 
     @DeleteMapping("{id}")
-    public void deletePost(@PathVariable long id) {
+    public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
     }
 
     @DeleteMapping("{id}/star")
-    public Post deleteMarkStarWithPost(@PathVariable long id) {
-       return postService.deleteMarkWithPost(id);
+    public Post deleteMarkStarWithPost(@PathVariable Long id) {
+        return postService.deleteMarkWithPost(id);
     }
 
 }
