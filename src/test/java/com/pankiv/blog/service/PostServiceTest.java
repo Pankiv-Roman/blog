@@ -1,78 +1,118 @@
 package com.pankiv.blog.service;
 
+import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.PostRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+
+import javax.persistence.EntityNotFoundException;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
 class PostServiceTest {
 
     @Autowired
     private PostService postService;
-    @MockBean
+
+    @Autowired
     private PostRepository postRepository;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-
     @Test
-    void testDeletePost() {
-        long postId = 1L;
-        Post post = new Post(postId, "Test Title", "Test Content");
-
-        when(postRepository.getById(postId)).thenReturn(post);
-
-        Post deletedPost = postService.deletePost(postId);
-
-        verify(postRepository, times(1)).getById(postId);
-        verify(postRepository, times(1)).delete(post);
-
-        assertEquals(post, deletedPost);
-    }
-
-    @Test
-    public void testMarkPostStar() {
+    @DisplayName("Test mark post star true")
+    void testMarkPostStarTrue() {
         Post post = new Post();
-        post.setId(1L);
+        post.setTitle("Test Title");
+        post.setContent("Test Content");
         post.setStar(false);
+        postRepository.save(post);
+//        postRepository.save(post);
 
-        when(postRepository.getById(1L)).thenReturn(post);
-        when(postRepository.save(any(Post.class))).thenReturn(post);
+        Post updatedPost = postService.markPostStarTrue(post.getId());
 
-        Post updatedPost = postService.markPostStar(1L, true);
+        assertNotNull(updatedPost);
+        assertTrue(updatedPost.isStar());
 
-        verify(postRepository, times(1)).getById(1L);
-        verify(postRepository, times(1)).save(post);
-
-        Assertions.assertTrue(updatedPost.isStar());
+        Post retrievedPost = postRepository.findById(post.getId()).orElse(null);
+        assertNotNull(retrievedPost);
+        assertTrue(retrievedPost.isStar());
     }
 
     @Test
-    public void testDeleteMarkWithPostStar() {
+    @DisplayName("Test mark post star false")
+    void testMarkPostStarFalse() {
         Post post = new Post();
-        post.setId(1L);
+        post.setTitle("Test Title");
+        post.setContent("Test Content");
         post.setStar(true);
+        postRepository.save(post);
 
-        when(postRepository.getById(1L)).thenReturn(post);
-        when(postRepository.save(any(Post.class))).thenReturn(post);
+        Post updatedPost = postService.markPostStarFalse(post.getId());
 
-        Post updatedPost = postService.deleteMarkWithPost(1L);
+        assertNotNull(updatedPost);
+        assertFalse(updatedPost.isStar());
 
-        verify(postRepository, times(1)).getById(1L);
-        verify(postRepository, times(1)).save(post);
-
-        Assertions.assertFalse(updatedPost.isStar());
+        Post retrievedPost = postRepository.findById(post.getId()).orElse(null);
+        assertNotNull(retrievedPost);
+        assertFalse(retrievedPost.isStar());
     }
+
+    @Test
+    @DisplayName("Test delete post")
+    void testDeletePost() {
+        Post post = new Post();
+        post.setTitle("Test Title");
+        post.setContent("Test Content");
+        post.setStar(true);
+        postRepository.save(post);
+
+        postService.deletePost(post.getId());
+
+        assertNotNull(post);
+
+        Post retrievedPost = postRepository.findById(post.getId()).orElse(null);
+        assertNull(retrievedPost);
+    }
+
+    @Test
+    @DisplayName("Test delete post with comment")
+    void testDeletePostWithComment() {
+        Post post = new Post();
+        post.setTitle("Test title");
+        post.setContent("Test content");
+        post.setStar(true);
+        postRepository.save(post);
+        Comment comment = new Comment();
+        comment.setPost(post);
+        comment.setId(comment.getId());
+        comment.setText("Test text");
+
+        postService.deletePost(post.getId());
+
+        assertNotNull(post);
+
+        Post retrievedPost = postRepository.findById(post.getId()).orElse(null);
+        assertNull(retrievedPost);
+    }
+
+    @Test
+    @DisplayName("Test deletePost with non-existing post should throw EntityNotFoundException")
+    void testExceptionDeletePost() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            postService.deletePost(0);
+        });
+
+    }
+
 }
+

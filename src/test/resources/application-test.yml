@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: password
+  flyway:
+    enabled: true
+

@@ -1,11 +1,14 @@
 package com.pankiv.blog.service;
 
 import com.pankiv.blog.entity.Post;
+import com.pankiv.blog.repository.CommentRepository;
 import com.pankiv.blog.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,8 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public Post savePost(Post post) {
@@ -32,32 +37,36 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post changePost(long id, Post post) {
         Optional<Post> existingPost = postRepository.findById(id);
-        postRepository.getById(id);
+        postRepository.getReferenceById(id);
         Post postToUpdate = existingPost.get();
         postToUpdate.setTitle(post.getTitle());
         postToUpdate.setContent(post.getContent());
         return postRepository.save(postToUpdate);
     }
 
+    @Transactional
     @Override
-    public Post deletePost(long id) {
-        Post post = postRepository.getById(id);
-        postRepository.delete(post);
-        return post;
+    public void deletePost(long id) {
+        if (postRepository.existsById(id)) {
+            commentRepository.deleteById(id);
+            postRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Post with id:" + id + " not found!");
+        }
     }
 
+    @Transactional
     @Override
-    public Post markPostStar(long id, boolean star) {
-        Post post = postRepository.getById(id);
-        post.setStar(true);
-        return postRepository.save(post);
+    public Post markPostStarTrue(long id) {
+        postRepository.markPostStar(id, true);
+        return postRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     @Override
-    public Post deleteMarkWithPost(long id) {
-        Post post = postRepository.getById(id);
-        post.setStar(false);
-        return postRepository.save(post);
+    public Post markPostStarFalse(long id) {
+        postRepository.markPostStar(id, false);
+        return postRepository.findById(id).orElse(null);
     }
 
     @Override

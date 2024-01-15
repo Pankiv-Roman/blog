@@ -39,8 +39,8 @@ public class PostController {
     }
 
     @PutMapping("{id}/star")
-    public Post markPostStar(@PathVariable Long id) {
-        return postService.markPostStar(id, true);
+    public Post markPostStarTrue(@PathVariable Long id) {
+         return postService.markPostStarTrue(id);
     }
 
     @DeleteMapping("{id}")
@@ -49,8 +49,8 @@ public class PostController {
     }
 
     @DeleteMapping("{id}/star")
-    public Post deleteMarkStarWithPost(@PathVariable Long id) {
-        return postService.deleteMarkWithPost(id);
+    public Post markPostStarFalse(@PathVariable Long id) {
+        return postService.markPostStarFalse(id);
     }
 
 }
