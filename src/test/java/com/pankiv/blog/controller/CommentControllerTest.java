@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +100,7 @@ public class CommentControllerTest {
         return Comment.commentBuilder()
                 .id(id)
                 .text(text)
-                .creationDate(date)
+                .creationDate(LocalDateTime.now())
                 .build();
     }
 

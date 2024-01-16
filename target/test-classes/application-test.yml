@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      jdbc:
+        lob:
+          non_contextual_creation: true
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+
+#  spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation= true

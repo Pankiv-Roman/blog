@@ -1,0 +1,13 @@
+com\pankiv\blog\service\CommentService.class
+com\pankiv\blog\entity\Post$PostBuilder.class
+com\pankiv\blog\entity\Post.class
+com\pankiv\blog\service\PostService.class
+com\pankiv\blog\controller\PostController.class
+com\pankiv\blog\entity\Comment$CommentBuilder.class
+com\pankiv\blog\entity\Comment.class
+com\pankiv\blog\repository\CommentRepository.class
+com\pankiv\blog\service\CommentServiceImpl.class
+com\pankiv\blog\repository\PostRepository.class
+com\pankiv\blog\BlogApplication.class
+com\pankiv\blog\service\PostServiceImpl.class
+com\pankiv\blog\controller\CommentController.class

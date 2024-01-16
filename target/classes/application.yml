@@ -1,0 +1,47 @@
+#spring:
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#      format_sql: true
+#    show-sql: true
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: root
+#  flyway:
+#    enabled: true
+#    locations: classpath:db/migration
+#    baseline-on-migrate: true
+#
+#
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      format_sql: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG

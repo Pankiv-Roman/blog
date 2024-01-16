@@ -1,14 +1,15 @@
 package com.pankiv.blog.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "commentBuilder")
@@ -23,11 +24,11 @@ public class Comment {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creation_date", updatable = false)
-    private Date creationDate;
+    @Column(name = "created")
+    private LocalDateTime creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    @JsonBackReference
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    //@JsonBackReference
     private Post post;
 }

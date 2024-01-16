@@ -4,29 +4,29 @@ import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.PostRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.context.annotation.Import;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Import({TestConfig.class})
 @DataJpaTest
-class PostServiceTest {
+public class PostServiceTest {
+
+    private final PostService postService;
+    private final PostRepository postRepository;
 
     @Autowired
-    private PostService postService;
-
-    @Autowired
-    private PostRepository postRepository;
+    public PostServiceTest(PostService postService, PostRepository postRepository) {
+        this.postService = postService;
+        this.postRepository = postRepository;
+    }
 
     @Test
     @DisplayName("Test mark post star true")
