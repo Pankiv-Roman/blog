@@ -4,19 +4,18 @@ import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.CommentRepository;
 import com.pankiv.blog.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Override
     public Comment fetchComments(long id) {

@@ -4,21 +4,21 @@ import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.CommentRepository;
 import com.pankiv.blog.repository.PostRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private CommentRepository commentRepository;
+    private final PostRepository postRepository;
+
+    private final CommentRepository commentRepository;
 
     @Override
     public Post savePost(Post post) {
@@ -48,7 +48,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(long id) {
         if (postRepository.existsById(id)) {
-            commentRepository.deleteById(id);
+            commentRepository.deleteByPostId(id);
             postRepository.deleteById(id);
         } else {
             throw new EntityNotFoundException("Post with id:" + id + " not found!");

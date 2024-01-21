@@ -1,0 +1,4 @@
+com\pankiv\blog\BlogApplicationTests.class
+com\pankiv\blog\service\PostServiceTest.class
+com\pankiv\blog\controller\CommentControllerTest.class
+com\pankiv\blog\controller\PostControllerTest.class
