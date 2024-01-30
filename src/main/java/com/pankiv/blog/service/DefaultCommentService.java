@@ -11,14 +11,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService {
+public class DefaultCommentService implements CommentService {
 
     private final CommentRepository commentRepository;
+
 
     private final PostRepository postRepository;
 
     @Override
-    public Comment fetchComments(long id) {
+    public Comment getComments(long id) {
         return commentRepository.getReferenceById(id);
     }
 
@@ -37,7 +38,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Post getCommentsWithPost(Long postId) {
-        return postRepository.findById(postId)
-                .orElse(null);
+        return postRepository.findPostWithCommentsById(postId);
     }
 }
