@@ -3,18 +3,19 @@ package com.pankiv.blog.controller;
 import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.service.CommentService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
+
 public class CommentControllerTest {
     List<Comment> comments;
     @Autowired
@@ -37,11 +40,12 @@ public class CommentControllerTest {
     private Comment comment2;
 
     @Test
-    void testFetchComments() throws Exception {
+    @DisplayName("Test get comments")
+    void testGetComments() throws Exception {
         comment1 = createComment(1L, "testComment1", "2023-12-17T20:43:40.455");
         comment2 = createComment(2L, "testComment2", "2022-10-10T11:40:40.000");
 
-        when(commentService.fetchComments(1L)).thenReturn(comment1, comment2);
+        when(commentService.getComments(1L)).thenReturn(comment1, comment2);
         ResultActions resultActions = mockMvc.perform(get("/api/v1/posts/1/comments")
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -52,6 +56,7 @@ public class CommentControllerTest {
     }
 
     @Test
+    @DisplayName("Test get post with comment")
     void testGetCommentWithPost() throws Exception {
         comment1 = createComment(1L, "Test comment", "2023-12-17T20:43:40.455");
         Post post = createPost(1L, "Test content", "Test title", true, comments);
@@ -65,6 +70,7 @@ public class CommentControllerTest {
     }
 
     @Test
+    @DisplayName("Test get post with all comments")
     void testGetCommentsWithPost() throws Exception {
         Post post = createPost(1L, "Test content", "Test title", true, comments);
 
@@ -100,7 +106,7 @@ public class CommentControllerTest {
         return Comment.commentBuilder()
                 .id(id)
                 .text(text)
-                .creationDate(LocalDateTime.now())
+                .creationDate(date)
                 .build();
     }
 

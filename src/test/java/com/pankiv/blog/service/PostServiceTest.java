@@ -2,31 +2,31 @@ package com.pankiv.blog.service;
 
 import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
+import com.pankiv.blog.repository.CommentRepository;
 import com.pankiv.blog.repository.PostRepository;
 
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import({TestConfig.class})
-@DataJpaTest
-public class PostServiceTest {
-
-    private final PostService postService;
-    private final PostRepository postRepository;
+@SpringBootTest
+@ActiveProfiles("test")
+class PostServiceTest {
 
     @Autowired
-    public PostServiceTest(PostService postService, PostRepository postRepository) {
-        this.postService = postService;
-        this.postRepository = postRepository;
-    }
+    private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Test
     @DisplayName("Test mark post star true")
@@ -36,7 +36,6 @@ public class PostServiceTest {
         post.setContent("Test Content");
         post.setStar(false);
         postRepository.save(post);
-//        postRepository.save(post);
 
         Post updatedPost = postService.markPostStarTrue(post.getId());
 
@@ -96,9 +95,11 @@ public class PostServiceTest {
         comment.setPost(post);
         comment.setId(comment.getId());
         comment.setText("Test text");
+        commentRepository.save(comment);
 
         postService.deletePost(post.getId());
 
+        assertNotNull(comment);
         assertNotNull(post);
 
         Post retrievedPost = postRepository.findById(post.getId()).orElse(null);
@@ -106,13 +107,39 @@ public class PostServiceTest {
     }
 
     @Test
-    @DisplayName("Test deletePost with non-existing post should throw EntityNotFoundException")
+    @DisplayName("Test delete Post with non-existing post should throw EntityNotFoundException")
     void testExceptionDeletePost() {
         assertThrows(EntityNotFoundException.class, () -> {
             postService.deletePost(0);
         });
-
     }
 
-}
+    @Test
+    @DisplayName("Test change post")
+    void testChangePost() {
+        Post post = new Post();
+        post.setTitle("Test title");
+        post.setContent("Test content");
+        postRepository.save(post);
 
+
+        postService.changePost(post.getId(), post);
+        post.setTitle("Change title");
+        post.setContent("Change content");
+
+        assertEquals(post.getTitle(), "Change title");
+        assertEquals(post.getContent(), "Change content");
+    }
+
+    @Test
+    @DisplayName("Test save post")
+    void testSavePost() {
+        Post postToSave = new Post();
+        postRepository.save(postToSave);
+
+        Post savePost = postService.addPost(postToSave);
+
+        assertNotNull(savePost);
+        assertEquals(postToSave.getId(), savePost.getId());
+    }
+}

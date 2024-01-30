@@ -4,7 +4,7 @@ import com.pankiv.blog.entity.Comment;
 import com.pankiv.blog.entity.Post;
 
 public interface CommentService {
-    Comment fetchComments(long id);
+    Comment getComments(long id);
 
     Comment getCommentWithPost(long postId, long id);
 

@@ -1,5 +1,6 @@
 package com.pankiv.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,8 +25,6 @@ public class Post {
     private boolean star;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
-    //@JsonManagedReference
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
-
-
 }

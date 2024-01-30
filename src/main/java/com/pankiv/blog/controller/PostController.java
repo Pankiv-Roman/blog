@@ -3,7 +3,6 @@ package com.pankiv.blog.controller;
 import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,23 +12,22 @@ import java.util.List;
 @RequestMapping("api/v1/posts")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
     @PostMapping()
-    public Post savePost(@RequestBody Post post) {
-        return postService.savePost(post);
+    public Post addPost(@RequestBody Post post) {
+        return postService.addPost(post);
     }
 
     @GetMapping()
-    public List<Post> fetchPostsList(@RequestParam(required = false) String title,
+    public List<Post> getPostsList(@RequestParam(required = false) String title,
                                      @RequestParam(required = false) String sort) {
-        return postService.fetchPostsList(title, sort);
+        return postService.getPostsList(title, sort);
     }
 
     @GetMapping("star")
-    public List<Post> fetchPostsListWithStar() {
-        return postService.fetchPostsListWithStar();
+    public List<Post> getPostsListWithStar() {
+        return postService.getPostsListWithStar();
     }
 
     @PutMapping("{id}")

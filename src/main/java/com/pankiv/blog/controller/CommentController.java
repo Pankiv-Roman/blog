@@ -5,7 +5,6 @@ import com.pankiv.blog.entity.Post;
 import com.pankiv.blog.repository.PostRepository;
 import com.pankiv.blog.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
-    @Autowired
-    private PostRepository postRepository;
+    private final CommentService commentService;
+
+    private final PostRepository postRepository;
 
     @PostMapping("/{postId}/comments")
     public Comment addCommentToPost(@PathVariable Long postId,
@@ -28,8 +26,8 @@ public class CommentController {
     }
 
     @GetMapping("{id}/comments")
-    public Comment fetchComments(@PathVariable Long id) {
-        return commentService.fetchComments(id);
+    public Comment getComments(@PathVariable Long id) {
+        return commentService.getComments(id);
     }
 
     @GetMapping("/{postId}/comments/{id}")

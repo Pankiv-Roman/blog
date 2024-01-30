@@ -5,5 +5,5 @@ spring:
     username: postgres
     password: password
   flyway:
-    enabled: true
+    enabled: false
 
