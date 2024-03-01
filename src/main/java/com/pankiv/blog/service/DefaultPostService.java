@@ -1,22 +1,26 @@
 package com.pankiv.blog.service;
 
 import com.pankiv.blog.entity.Post;
+import com.pankiv.blog.entity.Tag;
 import com.pankiv.blog.repository.PostRepository;
-import jakarta.transaction.Transactional;
+import com.pankiv.blog.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultPostService implements PostService {
 
     private final PostRepository postRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public Post addPost(Post post) {
@@ -40,6 +44,7 @@ public class DefaultPostService implements PostService {
         postToUpdate.setContent(post.getContent());
         return postRepository.save(postToUpdate);
     }
+
     @Transactional
     @Override
     public void deletePost(long id) {
@@ -69,5 +74,11 @@ public class DefaultPostService implements PostService {
     @Override
     public List<Post> getPostsListWithStar() {
         return postRepository.findAllByStar(true);
+    }
+
+    @Override
+    public List<Post> getPostsByTagNames(Set<String> tagNames) {
+        Set<Tag> tags = new HashSet<>(tagRepository.findByNameIn(tagNames));
+        return postRepository.findDistinctByTagsIn(tags);
     }
 }

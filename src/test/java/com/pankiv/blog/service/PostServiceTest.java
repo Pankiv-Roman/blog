@@ -127,8 +127,8 @@ class PostServiceTest {
         post.setTitle("Change title");
         post.setContent("Change content");
 
-        assertEquals(post.getTitle(), "Change title");
-        assertEquals(post.getContent(), "Change content");
+        assertEquals("Change title", post.getTitle());
+        assertEquals("Change content", post.getContent());
     }
 
     @Test

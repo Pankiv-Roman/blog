@@ -14,8 +14,6 @@ import java.util.List;
 public class DefaultCommentService implements CommentService {
 
     private final CommentRepository commentRepository;
-
-
     private final PostRepository postRepository;
 
     @Override

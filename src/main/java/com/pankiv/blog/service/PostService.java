@@ -1,11 +1,8 @@
 package com.pankiv.blog.service;
 
 import com.pankiv.blog.entity.Post;
-import com.pankiv.blog.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.Access;
 import java.util.List;
+import java.util.Set;
 
 public interface PostService {
 
@@ -22,4 +19,6 @@ public interface PostService {
     Post markPostStarFalse(long id);
 
     List<Post> getPostsListWithStar();
+
+    List<Post> getPostsByTagNames(Set<String> tagNames);
 }

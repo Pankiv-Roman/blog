@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class PostController {
 
     @GetMapping()
     public List<Post> getPostsList(@RequestParam(required = false) String title,
-                                     @RequestParam(required = false) String sort) {
+                                   @RequestParam(required = false) String sort) {
         return postService.getPostsList(title, sort);
     }
 
@@ -38,7 +39,7 @@ public class PostController {
 
     @PutMapping("{id}/star")
     public Post markPostStarTrue(@PathVariable Long id) {
-         return postService.markPostStarTrue(id);
+        return postService.markPostStarTrue(id);
     }
 
     @DeleteMapping("{id}")
@@ -51,4 +52,8 @@ public class PostController {
         return postService.markPostStarFalse(id);
     }
 
+    @GetMapping("/tag")
+    public List<Post> getPostsByTagNames(@RequestParam Set<String> tagNames) {
+        return postService.getPostsByTagNames(tagNames);
+    }
 }
