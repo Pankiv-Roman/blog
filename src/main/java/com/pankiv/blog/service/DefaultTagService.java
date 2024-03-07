@@ -20,23 +20,26 @@ public class DefaultTagService implements TagService {
     private final TagRepository tagRepository;
     private final PostTagRepository postTagRepository;
 
-    public void addTagToPost(Long postId, Tag tag) {
+    @Transactional
+    @Override
+    public Post addTagToPost(Long postId, Tag tag) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
 
         post.addTag(tagRepository.save(tag));
-        postRepository.save(post);
+        return postRepository.save(post);
     }
 
     @Transactional
     @Override
-    public void deleteTagById(Long tagId) {
+    public Tag deleteTagById(Long tagId) {
         if (tagRepository.existsById(tagId)) {
             postTagRepository.deletePostTagById(tagId);
             tagRepository.deleteTagById(tagId);
         } else {
             throw new EntityNotFoundException("Tag not found with id: " + tagId);
         }
+        return null;
     }
 
     @Override

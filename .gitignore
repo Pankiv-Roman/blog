@@ -1,0 +1,17 @@
+*.class
+
+*.properties
+*.xml
+*.yaml
+
+*.log
+*.swp
+.DS_Store
+
+.idea/
+.vscode/
+
+/target/
+/build/
+/bin/
+/out/
